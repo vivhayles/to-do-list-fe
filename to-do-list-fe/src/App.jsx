@@ -5,7 +5,7 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route exact path="/tasks" element={<ToDoListPage />} /> {/* Add JSX syntax */}
+                <Route exact path="/" element={<ToDoListPage />} /> 
             </Routes>
         </BrowserRouter>
     );
