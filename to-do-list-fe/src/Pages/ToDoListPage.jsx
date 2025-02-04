@@ -14,6 +14,7 @@ function ToDoListPage() {
         }
     };
     useEffect(() => {
+        fetchTasks();
     }, []);
 
     const handleInputChange = (event) => {
@@ -39,19 +40,24 @@ function ToDoListPage() {
                 body: JSON.stringify(newTaskObj),
             });
 
-            fetchTasks();
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            await fetchTasks();
             setNewTask("");
         } catch (error) {
             console.error("Error adding task:", error);
         }
     };
-
-    const handleDeleteTask = async (taskId) => {
+//handleCompletedTask needs fixing- I think it's an issue with the task ID
+    const handleCompletedTask = async (taskId) => {
         try {
             await fetch(`http://localhost:8000/api/tasks/${taskId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    "Accept": "application/json",
                 },
                 body: JSON.stringify({ completed: true }),
             });
@@ -93,7 +99,7 @@ function ToDoListPage() {
                             <input
                                 type="checkbox"
                                 className="w-5 h-5"
-                                onChange={() => handleDeleteTask(task.id)}
+                                onChange={() => handleCompletedTask(task.id)}
                                 checked={task.completed}
                                 disabled={task.completed}
                             />
