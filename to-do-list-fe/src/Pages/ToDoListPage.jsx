@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
-import Footer from "../Components /Footer";
+import Footer from "../Components/Footer";
 
 function ToDoListPage() {
     const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState("");
-
+    const fetchTasks = async () => {
+        try {
+            const response = await fetch("http://localhost:8000/api/tasks");
+            const json = await response.json();
+            setTasks(json.data);
+        } catch (error) {
+            console.error("Error fetching tasks:", error);
+        }
+    };
     useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                const response = await fetch("http://localhost:8000/api/tasks");
-                const json = await response.json();
-                setTasks(json.data);
-            } catch (error) {
-                console.error("Error fetching tasks:", error);
-            }
-        };
-
-        fetchTasks();
     }, []);
 
     const handleInputChange = (event) => {
@@ -34,18 +31,36 @@ function ToDoListPage() {
         try {
             const response = await fetch("http://localhost:8000/api/tasks", {
                 method: "POST",
+                mode: "cors",
                 headers: {
                     "Content-Type": "application/json",
+                    "Accept": "application/json",
                 },
                 body: JSON.stringify(newTaskObj),
             });
 
-            const result = await response.json();
-
-            setTasks([...tasks, result.data]);
+            fetchTasks();
             setNewTask("");
         } catch (error) {
             console.error("Error adding task:", error);
+        }
+    };
+
+    const handleDeleteTask = async (taskId) => {
+        try {
+            await fetch(`http://localhost:8000/api/tasks/${taskId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ completed: true }),
+            });
+
+            setTasks(tasks.map(task =>
+                task.id === taskId ? { ...task, completed: true } : task
+            ));
+        } catch (error) {
+            console.error("Error updating task:", error);
         }
     };
 
@@ -75,7 +90,13 @@ function ToDoListPage() {
                     {tasks.map((task) => (
                         <li key={task.id} className="flex justify-between items-center p-2 border-b">
                             <p>{task.name}</p>
-                            <input type="checkbox" className="w-5 h-5" />
+                            <input
+                                type="checkbox"
+                                className="w-5 h-5"
+                                onChange={() => handleDeleteTask(task.id)}
+                                checked={task.completed}
+                                disabled={task.completed}
+                            />
                         </li>
                     ))}
                 </ul>
