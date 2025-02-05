@@ -50,7 +50,7 @@ function ToDoListPage() {
             console.error("Error adding task:", error);
         }
     };
-//handleCompletedTask needs fixing- I think it's an issue with the task ID
+
     const handleCompletedTask = async (taskId) => {
         try {
             await fetch(`http://localhost:8000/api/tasks/${taskId}`, {
@@ -61,7 +61,7 @@ function ToDoListPage() {
                 },
                 body: JSON.stringify({ completed: true }),
             });
-
+            console.log("Updating task with ID:", taskId);
             setTasks(tasks.map(task =>
                 task.id === taskId ? { ...task, completed: true } : task
             ));
