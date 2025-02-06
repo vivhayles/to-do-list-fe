@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import Footer from "../Components/Footer";
+import Button from "../Components/Button/index.jsx";
+import Navbar from "../Components/Navbar/index.jsx";
 
-function ToDoListPage() {
+function AllTasksPage() {
     const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState("");
     const fetchTasks = async () => {
@@ -72,6 +74,7 @@ function ToDoListPage() {
 
     return (
         <section className="bg-[#d0d9e1] font-sans w-full h-screen flex flex-col">
+            <Navbar />
             <h1 className="text-[#033c70] text-2xl font-bold p-8">To-Do List:</h1>
 
             <div className="flex-grow mx-10 p-6 bg-[#FFF8DC] overflow-auto flex flex-col">
@@ -83,13 +86,7 @@ function ToDoListPage() {
                         onChange={handleInputChange}
                         placeholder="Let's Get Stuff Done!"
                     />
-                    <button
-                        type="button"
-                        className="px-4 py-2 bg-[#5ed36c] rounded-md"
-                        onClick={handleAddTask}
-                    >
-                        Add Task
-                    </button>
+                    <Button  className='bg-[#5ed36c]' onClick={handleAddTask} text = 'Add Task'/>
                 </form>
 
                 <ul className="flex-grow">
@@ -112,4 +109,4 @@ function ToDoListPage() {
     );
 }
 
-export default ToDoListPage;
+export default AllTasksPage;
