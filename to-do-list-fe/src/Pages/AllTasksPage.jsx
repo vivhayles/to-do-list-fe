@@ -98,15 +98,15 @@ function AllTasksPage() {
                         <li key={task.id} className="flex justify-between items-center p-2 border-b">
                             <label htmlFor={`taskCheckbox-${task.id}`} className="flex items-center gap-2">
                                 <span>{task.name}</span>
-                                <input
-                                    id={`taskCheckbox-${task.id}`}
-                                    type="checkbox"
-                                    className="w-5 h-5"
-                                    onChange={() => handleCompletedTask(task.id)}
-                                    checked={task.completed}
-                                    disabled={task.completed}
-                                />
                             </label>
+                            <input
+                                id={`taskCheckbox-${task.id}`}
+                                type="checkbox"
+                                className="w-5 h-5 ml-auto"
+                                onChange={() => handleCompletedTask(task.id)}
+                                checked={task.completed}
+                                disabled={task.completed}
+                            />
                         </li>
                     ))}
                 </ul>
