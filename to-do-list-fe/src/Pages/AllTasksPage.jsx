@@ -79,32 +79,39 @@ function AllTasksPage() {
 
             <div className="flex-grow mx-10 p-6 bg-[#FFF8DC] overflow-auto flex flex-col">
                 <form className="flex mt-4 gap-x-2" onSubmit={(e) => e.preventDefault()}>
+                    <label htmlFor="taskInput" className="sr-only">
+                        Add Task
+                    </label>
                     <input
                         className="bg-white border p-2 flex-1"
+                        id="taskInput"
                         type="text"
                         value={newTask}
                         onChange={handleInputChange}
                         placeholder="Let's Get Stuff Done!"
                     />
-                    <Button  className='bg-[#5ed36c]' onClick={handleAddTask} text = 'Add Task'/>
+                    <Button className='bg-[#5ed36c]' onClick={handleAddTask} text='Add Task'/>
                 </form>
 
                 <ul className="flex-grow">
                     {tasks.map((task) => (
                         <li key={task.id} className="flex justify-between items-center p-2 border-b">
-                            <p>{task.name}</p>
-                            <input
-                                type="checkbox"
-                                className="w-5 h-5"
-                                onChange={() => handleCompletedTask(task.id)}
-                                checked={task.completed}
-                                disabled={task.completed}
-                            />
+                            <label htmlFor={`taskCheckbox-${task.id}`} className="flex items-center gap-2">
+                                <span>{task.name}</span>
+                                <input
+                                    id={`taskCheckbox-${task.id}`}
+                                    type="checkbox"
+                                    className="w-5 h-5"
+                                    onChange={() => handleCompletedTask(task.id)}
+                                    checked={task.completed}
+                                    disabled={task.completed}
+                                />
+                            </label>
                         </li>
                     ))}
                 </ul>
             </div>
-            <Footer />
+            <Footer/>
         </section>
     );
 }
